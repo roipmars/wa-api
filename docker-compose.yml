@@ -15,7 +15,7 @@ services:
       - instances_connecteds:/codechat/instances
     environment:
       - SERVER_PORT=8084
-      - SESSION_SECRET=null
+      - SESSION_SECRET=
 
       - LOG_LEVEL=ERROR|WARN|INFO|DEBUG|LOG|VERBOSE|DARK
       - LOG_COLOR=true
@@ -41,9 +41,9 @@ services:
 
       - CONNECTION_TIMEOUT=300
 
-      - AUTHENTICATION_GLOBAL_AUTH_TOKEN=null
+      - AUTHENTICATION_GLOBAL_AUTH_TOKEN=
       - AUTHENTICATION_JWT_EXPIRES_IN=0
-      - AUTHENTICATION_JWT_SECRET=null
+      - AUTHENTICATION_JWT_SECRET=
 
       - PROVIDER_ENABLED=true
       - PROVIDER_HOST=127.0.0.1
