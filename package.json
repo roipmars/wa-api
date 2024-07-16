@@ -1,7 +1,7 @@
 {
   "name": "whatsapp-api",
   "version": "1.3.3",
-  "description": "Rest api for communication with WhatsApp",
+  "description": "REST API for communication with WhatsApp",
   "main": "./dist/src/main.js",
   "scripts": {
     "build": "tsc",

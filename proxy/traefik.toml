@@ -1,7 +1,7 @@
 # https://doc.traefik.io/traefik/reference/static-configuration/file/
 
 ###############################################################
-# Configuração global
+# Global configuration
 ###############################################################
 
 [global]
@@ -9,10 +9,10 @@
   sendAnonymousUsage = true
 
 ###############################################################
-# Configuração de pontos de entrada
+# Input points configuration
 ###############################################################
 
-# Definição de pontos de entrada
+# Definition of input points
 #
 [entryPoints]
   [entryPoints.web_secure]
@@ -22,7 +22,7 @@
 
   [entryPoints.web]
     address = ":80"
-    # Redirecionamento permanente para https
+    # Permanent redirect to https
     [entryPoints.web.http]
       [entryPoints.web.http.redirections]
         [entryPoints.web.http.redirections.entryPoint]
@@ -32,55 +32,55 @@
           priority = 1
 
 ###############################################################
-# Configuração de logs do Traefik
+# Traefik Log Configuration
 ###############################################################
 
-# registros do Traefik
-# Habilitado por padrão e logado em stdout
+# Traefik records
+# Qualified by default and logged in Stdout
 #
 [log]
 
-  # Nível de registro
+  # Registration level
   #
-  # níveis=TRACE, DEBUG, INFO, WARN, ERROR, FATAL, e PANIC
+  # levels=TRACE, DEBUG, INFO, WARN, ERROR, FATAL, e PANIC
   #
   level = "DEBUG"
 
-  # Define o caminho do arquivo para o log do traefik. Se não for especificado, stdout será usado.
-  # Diretórios intermediários são criados se necessário.
+  # Defines the file path to the traefik log.If not specified, STDOUT will be used.
+  # Intermediate directories are created if necessary.
   #
   # mkdir -p /var/log/traefik/
   #
   filePath = "/var/log/traefik/traefik.json"
 
-  # O formato é "json" ou "common".
+  # The format is “json” or “common”.
   #
-  # Opcional
-  # Padrão: "common"
+  # Optional
+  # Default: "common"
   #
   format = "json"
 
-  # Tamanho máximo dos logs
+  # Maximum log size
   # 100 mb
   #
   maxSize = 100
 
-  # Número máximo de dias para reter arquivos de log antigos com base no carimbo de data/hora
-  # 30 dias
+  # Maximum number of days to retain old log files based on the date/hour stamp
+  # 30Dias
   #
   maxAge = 30
 
 ###############################################################
-# Configuração de logs de acesso
+# Access Log Configuration
 ###############################################################
 
 [accessLog]
 
-  # Define o caminho do arquivo para o log de acesso. Se não for especificado, stdout será usado.
-  # Diretórios intermediários são criados se necessário.
+  # Set the file path to the access log.If not specified, STDOUT will be used.
+  # Intermediate directories are created if necessary.
   #
-  # Opcional
-  # Padrão: os.Stdout
+  # Optional
+  # Default: os.Stdout
   #
   # mkdir -p /var/log/traefik/
   #
@@ -93,128 +93,128 @@
   #
   format = "json"
 
-  # Número de linha para gravação de logs de forma assíncrona
-  # 100 linhas
+  # LOG NUMBER FOR LOG RECORDING
+  # 100 lines
   #
   bufferingSize = 100
 
 ################################################################
-# Configuração de API e painel
+# API and Panel Configuration
 ################################################################
 
-# Hailitabdo Api e dashboard
+# Enabling API and DASHBOARD
 #
 [api]
-  # Habilite a API em modo inseguro
+  # Enable the API in insecure mode
   #
-  # Opcional
-  # Padrão: false
+  # Optional
+  # Default: false
   #
   # insecure = true
 
-  # Painel habilitado
+  # Skilled panel
   #
-  # Opcional
-  # Padrão: true
+  # Optional
+  # Default: true
   #
   dashboard = true
 
-# Habilitar ping
+# Enable ping
 # [ping]
 
-  # Nome do ponto de entrada relacionado
+  # Related entry point name
   #
-  # Opcional
-  # Padrão: "traefik"
+  # Optional
+  # Default: "traefik"
   #
-  # Caminho = /traefik
-  # Métodos = GET,HEAD
-  # Descrição: Um endpoint para verificar a atividade do processo Traefik. Retorne um código 200com o conteúdo:OK
+  # Path = /traefik
+  # Methods = GET,HEAD
+  # Description: An endpoint to verify the activity of the traefik process.Return a code 200 with the content: ok
   #
   # entryPoint = "traefik"
 
 ###############################################################
-# PROVEDORES
+# Suppliers
 ###############################################################
 
 [providers]
-  ###############################################################
-### Back-end de configuração do file
-  ###############################################################
+###############################################################
+### FILE CONFIGURATION BACK
+###############################################################
 
-  # Habilita o back-end de configuração para arquivo
+  # Enables the configuration back-end for archivo
   [providers.file]
 
-  # Caminho do arquivo de configuração
+  # Setup file patho
   # mkdir -p /etc/traefik/dynamic
   # cp ./dynamic/conf.toml ./etc/traefik/dynamic/conf.toml
   #
   filename = "/etc/traefik/dynamic/conf.toml"
 
-  # Defina a watch opção para true  permitir que o Traefik observe automaticamente as 
-  # alterações do arquivo
+  # Define Watch Option to True allow Traefik to automatically observe
+  # File Changes
   #
-  # Padão: true
+  # Paddle: true
   #
   watch = true
 
-  ###############################################################
-### Back-end de configuração do docker
-  ###############################################################
+###############################################################
+### Docker configuration back-end
+###############################################################
 
-  # Habilita o back-end de configuração para docker swarm
+  # Enables the configuration back-end for docker swarm
   [providers.docker]
-    # Documentação
+    # Documentation
     # https://doc.traefik.io/traefik/providers/swarm/#usebindportip
     #
     # useBindPortIP = true
 
-    # Endpoint do servidor Docker. Pode ser um endpoint de soquete tcp ou unix.
+    # Docker server endpoint.It can be a TCP or Unix socket Endpoint.
     #
-    # Obrigatório
-    # Padrão: "unix:///var/run/docker.sock"
+    # Mandatory
+    # Default: "unix:///var/run/docker.sock"
     #
     endpoint = "unix:///var/run/docker.sock"
 
-    # Expor contêineres por padrão no traefik
+    # Exposure containers by default in traefik
     #
-    # Opcional
-    # Padrão: true
+    # Optional
+    # Default: true
     #
     exposedByDefault = false
 
-    # Definindo a rede publica de comunicação entre os containers
+    # Defining the public communication network between containers
     #
     network = "local_network"
 
-    # Assista aos eventos do Docker.
+    # Watch Docker events.
     #
-    # Padão: true
+    # Default: true
     #
     watch = true
 
 ###############################################################
-# Resolvedores de certificados
+# Certificate Resolvers
 ###############################################################
 
 
 [certificatesResolvers.letsencrypt_resolver.acme]
-  # Endereço de e-mail usado para registro.
+  # Email address used for registration.
   #
-  # Obrigatório
+  # Mandatory
   #
   email = "cleber@codechat.dev"
 
-  # Arquivo ou chave usada para armazenamento de certificados.
+  # File or key used for storage of certificates.
   # mkdir -p /etc/traefik/letsencrypt
-  # 
-  # Obrigatório
-  # 
+  #
+  # Mandatory
+  #
   storage = "/etc/traefik/letsencrypt/acme.json"
 
-  # Use um desafio HTTP-01 ACME.
+  # useUmDesafioHttp01Acme.
   #
-  # Opcional
+  # Optional
   #
   [certificatesResolvers.letsencrypt_resolver.acme.httpChallenge]
     entryPoint = "web"
