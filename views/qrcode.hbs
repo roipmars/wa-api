@@ -72,16 +72,16 @@
             headers,
             type: 'GET',
             success: (qrcode, status) => {
-               
+
             },
             error: (error) => console.log(error),
          });
       });
-      
-      //Conexão websocket
+
+      //Websocket connection
 
       const url = 'ws://localhost:8084/ws/events';
-      const reconnectInterval = 5000; // 5 segundos
+      const reconnectInterval = 5000; // 5 second
 
       function socket(eventName, callback) {
          const ws = new WebSocket(`${url}?event=${encodeURIComponent(eventName)}&token=${encodeURIComponent("{{auth.token}}")}`);
@@ -107,8 +107,8 @@
          };
       }
 
-      // Será criado uma instância da função para cada evento
-      // Os eventos são os mesmos disparados pela webhook
+      // An instance of the function will be created for each event
+      // The events are the same fired by the webhok
       socket("qrcode.updated", (msg, event) => {
          console.log("QRCODE: ", msg)
          $(`#update-qrcode`).remove();

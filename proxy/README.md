@@ -1,36 +1,36 @@
-# Configurando Proxy - Trefik
+# configuring Proxy Trefik
 
-## Uso da distribuição binária
+## use of Binary Distribution
 
-### Download e instalação - versão 3.0.0
+### download and Installation Version 300
 
-1. Usando curl para baixar o arquivo para a pasta atual.
+1. using Curl To Download The File To The Current Folder
 ```sh
 curl -L https://github.com/traefik/traefik/releases/download/v3.0.0/traefik_v3.0.0_linux_amd64.tar.gz -o ./traefik_v3.0.0_linux_amd64.tar.gz
 ```
 
-2. Extraindo o arquivo para o diretório `/etc/traefik`
+2. extracting The File To The Directory `/etc/traefik`
 ```sh
-# Extração
+# extraction
 tar -zxvf ./traefik_v3.0.0_linux_amd64.tar.gz -C /bin
 ```
 
-3. Testando o binário
+3. testing The Binary
 ```sh
 traefik --help
 ```
 
-## Configuração dos provedores
+## configuration Of Providers
 
-Acesse o arquivo de configuração do [traefik](./traefik.toml)
+access The Configuration File Of The [traefik](./traefik.toml)
 
-## Configuração dos roteadores
+## router Configuration
 
-Acesse o arquivo de [configuração dinâmica](./dynamic/conf.toml).
+access The File [dynamicConfiguration](./dynamic/conf.toml).
 
-1. Iniciando o serviço do `traefik` na pasta atual
+1. starting The `traefik` Service In The Current Folder
 
-  * Copie [traefik.toml](./traefik.toml) para `/etc/traefik/`
+  * copy [traefik.toml](./traefik.toml) to `/etc/traefik/`
   ```sh
   cp ./traefik.toml /etc/traefik
   ```
@@ -39,12 +39,12 @@ Acesse o arquivo de [configuração dinâmica](./dynamic/conf.toml).
 traefik --configfile=/etc/traefik/traefik.toml
 ```
 
-2. Iniciando o serviço do `traefik` em background
+2. starting The Service Of `traefik` In Background
 ```sh
 nohup traefik --configfile=traefik.toml &
 ```
 
-3. Obtendo dados detalhados do serviço
+3. obtaining Detailed Service Data
 ```sh
 ps -f $(pgrep -d, -x traefik)
 
@@ -52,7 +52,7 @@ ps -f $(pgrep -d, -x traefik)
 # root       66459       1  0 May15 ?        Sl     1:12 traefik --configFile=conf.toml
 ```
 
-4. Parando o serviço
+4. stopping The Service
 ```sh
 kill -9 66459
 ```

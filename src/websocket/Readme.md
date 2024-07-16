@@ -1,23 +1,23 @@
 ## Websocket
 
-### 1. Inicialização da Conexão WebSocket
+### 1. Websocket connection initialization
 
-O processo começa com a criação de uma nova instância do objeto `WebSocket`. O URL para a conexão inclui o caminho para o servidor WebSocket, um parâmetro de evento que especifica o tipo de evento ao qual o cliente está se inscrevendo e um token de autenticação. Este token será usado pelo servidor para verificar se o cliente tem permissão para conectar e receber esses eventos.
+The process begins with the creation of a new instance of the `Websocket` object.The connection URL includes the path to the Websocket server, an event parameter that specifies the type of event to which the customer is enrolling and an authentication token.This token will be used by the server to see if the customer is allowed to connect and receive these events.
 
 ```javascript
 const ws = new WebSocket(`${url}?event=${encodeURIComponent(eventName)}&token=${encodeURIComponent(instanceToken)}`);
 ```
 
-A URL é construída para incluir:
+The URL is built to include:
 
-- **`event`**: um parâmetro que especifica o tipo de evento de interesse, facilitando ao servidor rotear ou filtrar as mensagens de acordo com o tipo de dado ou comando desejado.
-- **`token`**: um parâmetro de segurança que provavelmente é usado pelo servidor para autenticar e autorizar a conexão.
+- **`event`**: A parameter that specifies the type of event of interest, making it easier for the server to route or filter messages according to the desired data or command type.
+- **`token`**: A security parameter that is probably used by the server to authenticate and authorize the connection.
 
-### 2. Manipuladores de Eventos
+### 2. Event manipulators
 
 **`onopen`**:
-- Este evento é disparado quando a conexão WebSocket é estabelecida com sucesso.
-- No manipulador de `onopen`, uma mensagem de teste é enviada imediatamente ao servidor. Isso pode ser usado para confirmar que a via de comunicação está funcionando ou para informar ao servidor sobre o estado inicial desejado do cliente.
+- This event is fired when the Websocket connection is successfully established.
+- In the `onopen` manipulator, a test message is sent immediately to the server.This can be used to confirm that the communication route is working or to inform the server about the desired initial state of the customer.
 
 ```javascript
 ws.onopen = () => {
@@ -27,8 +27,8 @@ ws.onopen = () => {
 ```
 
 **`onmessage`**:
-- Este evento é acionado sempre que uma mensagem é recebida do servidor.
-- As mensagens recebidas são tratadas convertendo o conteúdo de `event.data` de uma string JSON para um objeto JavaScript, que é então passado para a função `callback` fornecida pelo usuário do script.
+- This event is triggered whenever a message is received from the server.
+- The messages received are treated by converting the contents of `data` from a string JSON to a JavaScript object, which is then passed to the `callback` function provided by the script user.
 
 ```javascript
 ws.onmessage = (event) => {
@@ -40,8 +40,8 @@ ws.onmessage = (event) => {
 ```
 
 **`onerror`**:
-- Acionado quando ocorre um erro na conexão WebSocket.
-- Pode ser usado para logar ou tratar erros de rede, falhas de transmissão, etc.
+- Triggered when an error occurs in the Websocket connection.
+- It can be used to login or treat network errors, transmission failures, etc.
 
 ```javascript
 ws.onerror = (error) => {
@@ -50,8 +50,8 @@ ws.onerror = (error) => {
 ```
 
 **`onclose`**:
-- Este evento é acionado quando a conexão WebSocket é fechada, seja por iniciativa do cliente, do servidor, ou devido a falhas de rede.
-- O manipulador de eventos `onclose` tenta automaticamente reconectar-se ao servidor após um intervalo definido. Importante corrigir aqui, o `setTimeout` deve chamar `socket(eventName, callback)` ao invés de `socket(event)`, para garantir que a reconexão seja feita corretamente.
+- This event is triggered when the Websocket connection is closed, either at customer, server, or network failures.
+- The `Onclose` event manipulator automatically tries to reconnect to the server after a defined range.Important to correct here, the `Settimeout` should call` SOCKET (EventName, Callback) `instead of` SOCKET (Event) `, to ensure the reconnection is done correctly.
 
 ```javascript
 ws.onclose = (event) => {
@@ -60,11 +60,11 @@ ws.onclose = (event) => {
 };
 ```
 
-### 3. Reconexão Automática
+### 3. Automatic reconnection
 
-- Após a conexão ser fechada, o cliente tenta se reconectar usando um intervalo de tempo definido (`reconnectInterval`). Este comportamento garante que o cliente tente manter uma conexão persistente mesmo em face de problemas de rede ou reinícios do servidor.
+- After the connection is closed, the customer tries to reconnect using a defined time interval (`reconnectinterval`).This behavior ensures that the customer tries to maintain a persistent connection even in the face of server network or reinforcement problems.
 
-### 4. Exemplo completo
+### 4. Full example
 
 ```javascript
 const url = "ws://localhost:8084/ws/events";
@@ -95,9 +95,9 @@ function socket(eventName, callback) {
   };
 }
 
-// Será criado uma instância da função para cada evento
-// Os eventos são os mesmos disparados pela webhook
-// exceto o evento "messaging-history.set"
+// An instance of the function will be created for each event
+// The events are the same fired by the webhok
+// Except the event "Messaging-History.Set"
 
 socket("connection.update", (msg, event) => {
     console.log(msg)
