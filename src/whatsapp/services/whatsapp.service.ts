@@ -38,6 +38,7 @@
  */
 
 import makeWASocket, {
+  BaileysEventMap,
   BufferedEventData,
   CacheStore,
   Chat,
@@ -265,10 +266,7 @@ export class WAStartupService {
     const eventDesc = WebhookEventsEnum[event];
 
     try {
-      if (
-        this.webhook?.enabled &&
-        isURL(this.webhook?.url, { protocols: ['http', 'https'] })
-      ) {
+      if (this.webhook?.enabled) {
         if (this.webhook?.events && this.webhook?.events[event]) {
           await axios.post(
             this.webhook.url,
@@ -468,11 +466,9 @@ export class WAStartupService {
 
   private async getMessage(key: PrismType.Message, full = false) {
     try {
+      key.instanceId = this.instance.id;
       const message = await this.repository.message.findFirst({
-        where: {
-          instanceId: this.instance.id,
-          keyId: key.keyId,
-        },
+        where: key as any,
       });
       const webMessageInfo: Partial<proto.WebMessageInfo> = {
         key: {
@@ -719,12 +715,7 @@ export class WAStartupService {
     'messaging-history.set': async ({
       messages,
       chats,
-    }: {
-      chats: Chat[];
-      contacts: Contact[];
-      messages: proto.IWebMessageInfo[];
-      isLatest: boolean;
-    }) => {
+    }: BaileysEventMap['messaging-history.set']) => {
       if (chats && chats.length > 0) {
         const chatsRaw: PrismType.Chat[] = chats.map((chat) => {
           return {
@@ -1937,7 +1928,7 @@ export class WAStartupService {
         : ((await this.getMessage(m, true)) as proto.IWebMessageInfo);
 
       for (const subtype of MessageSubtype) {
-        if (msg.message[subtype]) {
+        if (msg?.message?.[subtype]) {
           msg.message = msg.message[subtype].message;
         }
       }
