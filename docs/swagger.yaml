@@ -43,15 +43,15 @@ info:
     [![Support](https://img.shields.io/badge/Buy%20me-coffe-orange)](https://app.picpay.com/user/cleber.wilson.oliveira)
 
     </div>
-      
+
     <div align="center"><img src="https://raw.githubusercontent.com/code-chat-br/whatsapp-api/main/public/images/cover.png"/></div>
 
-    CodeChat is an advanced WhatsApp integration API that seamlessly merges the popularity of WhatsApp with modern business applications. 
-    With comprehensive features, the CodeChat API empowers businesses to expand their digital presence, reach customers more directly, and 
+    CodeChat is an advanced WhatsApp integration API that seamlessly merges the popularity of WhatsApp with modern business applications.
+    With comprehensive features, the CodeChat API empowers businesses to expand their digital presence, reach customers more directly, and
     provide personalized and efficient support, all through the world's most widely used messaging platform.
 
-    The CodeChat API opens doors to more effective and engaging business communication, offering a modern approach to customer support, 
-    direct marketing, and real-time interactions. By combining WhatsApp's popularity with the functionality of the CodeChat API, businesses 
+    The CodeChat API opens doors to more effective and engaging business communication, offering a modern approach to customer support,
+    direct marketing, and real-time interactions. By combining WhatsApp's popularity with the functionality of the CodeChat API, businesses
     can build stronger and more authentic relationships with their customers, generating lasting satisfaction and loyalty.
 
     [![Run in Postman](https://run.pstmn.io/button.svg)](https://www.postman.com/codechat/workspace/codechat-whatsapp-api/api/fbe06c7b-7647-4c71-81ee-841f5b2e90d8?action=share&creator=14064846)
@@ -152,9 +152,9 @@ tags:
     description: Chatbot platform for creating virtual assistants.
   - name: Typebot > Sessions
     description: Management of chatbot sessions on the Typebot platform.
-  
-servers: 
-  - url: https://{prod_host}
+
+servers:
+  - url: https://{{prod_host}}
     variables:
       prod_host:
         default: apiv1.codechat.dev
@@ -184,7 +184,7 @@ paths:
             application/json: {}
       description: |
         This endpoint returns the QR code for the specified instance.
-  
+
   /instance/create:
     post:
       tags:
@@ -222,7 +222,7 @@ paths:
                   id: 1
                   token: >-
                     eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbnN0YW5jZU5hbWUiOiJjb2RlY2hhdCIsImFwaU5hbWUiOiJ3aGF0c2FwcC1hcGkiLCJ0b2tlbklkIjoiYjEwZDYzZWYtZGQ4Ni00NzFmLTljZmMtOGYxMTAxYTJjNGI3IiwiaWF0IjoxNzAxNzMyODYyLCJleHAiOjE3MDE3MzY0NjIsInN1YiI6ImctdCJ9.ICtbfIIUm7tE52GlxhBTEHiYwWSNAeWTg3er6v1I9Qw
-  
+
   /instance/fetchInstances:
     get:
       tags:
@@ -287,7 +287,7 @@ paths:
                       Webhook: null
                       Chatwoot: null
                       Typebot: null
-  
+
   /instance/connect/{instanceName}:
     get:
       tags:
@@ -362,7 +362,7 @@ paths:
             error: Not Found
             message:
               - The "codechat" instance does not exist
-  
+
   /instance/connectionState/{instanceName}:
     get:
       tags:
@@ -431,7 +431,7 @@ paths:
               example:
                 status: 401
                 error: Unauthorized
-  
+
   /instance/logout/{instanceName}:
     delete:
       tags:
@@ -450,7 +450,7 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  
+
   /instance/delete/{instanceName}:
     delete:
       tags:
@@ -575,7 +575,7 @@ paths:
                     messageTimestamp: 1701769053
                     instanceId: 1
                     device: web
-  
+
   /message/sendMedia/{instanceName}:
     post:
       tags:
@@ -583,7 +583,7 @@ paths:
       summary: Send Media
       description: |
         This endpoint allows sending media messages via WhatsApp. It requires the following parameters in the request body:
-        
+
         - `number` (required): The phone number of the recipient.
         - `options` (optional): Additional options for the message.
           - `delay` (optional): The delay in milliseconds before sending the message.
@@ -594,9 +594,9 @@ paths:
           - `fileName` (optional): The name of the file.
           - `caption` (optional): The caption for the media.
           - `media` (required): The URL of the media file.
-        
+
         The `instanceName` parameter in the path specifies the instance name for sending the media message.
-        
+
         A successful response will have a status code of 200 and an empty JSON body.
       requestBody:
         content:
@@ -630,7 +630,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Message'
-  
+
   /message/sendMediaFile/{instanceName}:
     post:
       tags:
@@ -676,9 +676,9 @@ paths:
                   type: string
                   description: |
                     - optional
-                    
+
                     ---
-                    
+
                     **Types:**
 
                     - `[string]`
@@ -686,7 +686,7 @@ paths:
                     - `[string[number]]`
                     - `[string[Json[Object]]]`
                     - `[string[Json[Array]]]`
-                    
+
       parameters:
         - name: instanceName
           in: path
@@ -727,7 +727,7 @@ paths:
                 messageTimestamp: 1701767429
                 instanceId: 1
                 device: web
-  
+
   /message/sendLocation/{instanceName}:
     post:
       tags:
@@ -735,7 +735,7 @@ paths:
       summary: Send Location
       description: |
         This endpoint allows sending a location message via WhatsApp. The request body should contain the following parameters:
-        
+
         - `number` (string, required): The phone number to send the message to.
         - `options` (object, optional): Additional options for the message.
           - `delay` (integer, optional): The delay in milliseconds before sending the message.
@@ -746,7 +746,7 @@ paths:
           - `address` (string, optional): The address of the location.
           - `latitude` (integer, required): The latitude of the location.
           - `longitude` (integer, required): The longitude of the location.
-        
+
         The `instanceName` path parameter should be replaced with the actual instance name.
 
       requestBody:
@@ -781,7 +781,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Message'
-  
+
   /message/sendContact/{instanceName}:
     post:
       tags:
@@ -864,15 +864,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Message'
-  
+
   /message/sendWhatsAppAudio/{instanceName}:
     post:
       tags:
         - Send Message Controller
       summary: Send WhatsApp Audio
       description: |
-        This endpoint allows you to send a WhatsApp audio message. 
-        It requires the instance name and the audio URL as parameters. 
+        This endpoint allows you to send a WhatsApp audio message.
+        It requires the instance name and the audio URL as parameters.
         You can also provide additional options such as delay and quoted message ID.
       requestBody:
         content:
@@ -944,9 +944,9 @@ paths:
                   type: string
                   description: |
                     - optional
-                    
+
                     ---
-                    
+
                     **Types:**
 
                     - `[string]`
@@ -954,7 +954,7 @@ paths:
                     - `[string[number]]`
                     - `[string[Json[Object]]]`
                     - `[string[Json[Array]]]`
-                    
+
       responses:
         '200':
           description: Audio file sent successfully.
@@ -976,7 +976,7 @@ paths:
           description: Bad Request - Incorrect parameters or missing audio file.
         '500':
           description: Internal Server Error - Error in processing the request.
-  
+
   /message/sendButtons/{instanceName}:
     post:
       tags:
@@ -1153,7 +1153,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Message'
-  
+
   /chat/whatsappNumbers/{instanceName}:
     post:
       tags:
@@ -1201,7 +1201,7 @@ paths:
                 message:
                   - property: numbers[0]
                     message: '"numbers" must be an array of numeric strings'
-  
+
   /chat/readMessages/{instanceName}:
     patch:
       tags:
@@ -1250,7 +1250,7 @@ paths:
                     message: >-
                       readMessages[0].fromMe is not one of enum values:
                       true,false
-  
+
   /chat/archiveChat/{instanceName}:
     put:
       tags:
@@ -1310,7 +1310,7 @@ paths:
             description: Successful response
             content:
               application/json: {}
-  
+
   /chat/fetchProfilePictureUrl/{instanceName}:
       post:
         tags:
@@ -1339,7 +1339,7 @@ paths:
             description: Successful response
             content:
               application/json: {}
-  
+
   /chat/findContacts/{instanceName}:
     post:
       tags:
@@ -1414,7 +1414,7 @@ paths:
                   createdAt: "2023-12-05T00:00:00.000Z"
                   updatedAt: "2023-12-05T00:00:00.000Z"
                   instanceId: 1
-  
+
   /chat/retrieverMediaMessage/{instanceName}:
     post:
       tags:
@@ -1463,7 +1463,7 @@ paths:
                     description: Error message detailing why the media message or instance was not found.
                 example:
                   error: "Media message or instance not found"
-    
+
   /chat/findMessages/{instanceName}:
     post:
       tags:
@@ -1602,7 +1602,7 @@ paths:
                         id: 5
                         status: "DELIVERY_ACK"
                         dateTime: "2023-12-05T00:00:00.000Z"
-  
+
   /chat/findStatusMessage/{instanceName}:
       post:
         tags:
@@ -1632,7 +1632,7 @@ paths:
             description: Successful response
             content:
               application/json: {}
-  
+
   /chat/findChats/{instanceName}:
     get:
       tags:
@@ -1651,7 +1651,7 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  
+
   /chat/updatePresence/{instanceName}:
     patch:
       tags:
@@ -1682,7 +1682,7 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  
+
   /chat/rejectCall/{instanceName}:
     patch:
       tags:
@@ -1696,7 +1696,7 @@ paths:
               type: object
               example:
                 callId: string
-                callFrom: string 
+                callFrom: string
       parameters:
         - name: instanceName
           in: path
@@ -1709,7 +1709,7 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  
+
   /group/create/{instanceName}:
       post:
         tags:
@@ -1739,7 +1739,7 @@ paths:
             description: Successful response
             content:
               application/json: {}
-  
+
   /group/updateGroupPicture/{instanceName}:
     put:
       tags:
@@ -1771,7 +1771,7 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  
+
   /group/findGroupInfos/{instanceName}:
     get:
       tags:
@@ -1800,7 +1800,7 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  
+
   /group/participants/{instanceName}:
     get:
       tags:
@@ -1825,7 +1825,7 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  
+
   /group/inviteCode/{instanceName}:
     get:
       tags:
@@ -1853,7 +1853,7 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  
+
   /group/revokeInviteCode/{instanceName}:
     put:
       tags:
@@ -1880,7 +1880,7 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  
+
   /group/updateParticipant/{instanceName}:
     put:
       tags:
@@ -1910,7 +1910,7 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  
+
   /group/leaveGroup/{instanceName}:
     delete:
       tags:
@@ -1935,7 +1935,7 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  
+
   /instance/refreshToken/:
     put:
       tags:
@@ -1956,7 +1956,7 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  
+
   /webhook/set/{instanceName}:
     put:
       tags:
@@ -2058,7 +2058,7 @@ paths:
                     connectionUpdated: true
                     groupsParticipantsUpdated: true
                 instanceId: 1
-  
+
   /webhook/find/{instanceName}:
     get:
       tags:
@@ -2115,7 +2115,7 @@ paths:
                 createdAt: "2023-12-05T00:00:00.000Z"
                 updatedAt: "2023-12-05T00:00:00.000Z"
                 instanceId: 1
-  
+
   /s3/findMedia/{instance}:
     post:
       tags:
@@ -2240,7 +2240,7 @@ paths:
                     messageTimestamp: 1701782468
                     device: android
                     instanceId: 1
-  
+
   /s3/media/url/{id}/{instance}/:
     get:
       tags:
@@ -2393,7 +2393,7 @@ paths:
                 error: Bad Request
                 message:
                   - Media not found
-  
+
   /typebot/sessions/find/{instanceName}:
     get:
       tags:
@@ -2491,7 +2491,7 @@ paths:
                 error: Not Found
                 message:
                   - The "codechat-bot" instance does not exist
-  
+
   /typebot/sessions/update/{instanceName}:
     patch:
       tags:
@@ -2595,7 +2595,7 @@ paths:
                 error: Not Found
                 message:
                   - The "codechat-bot" instance does not exist
-  
+
   /typebot/create/{instanceName}:
     post:
       tags:
@@ -2710,7 +2710,7 @@ paths:
                 error: Not Found
                 message:
                   - Bot instance not found
-  
+
   /typebot/update/{instanceName}:
     put:
       tags:
@@ -2825,7 +2825,7 @@ paths:
                 error: Not Found
                 message:
                   - Bot instance not found
-  
+
   /typebot/find/{instanceName}:
     get:
       tags:
@@ -2923,7 +2923,7 @@ paths:
                 error: Not Found
                 message:
                   - The "codechat-bot" instance does not exist
-  
+
   /typebot/delete/{instanceName}:
     delete:
       tags:
