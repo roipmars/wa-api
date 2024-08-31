@@ -687,21 +687,6 @@ paths:
                     - `[string[Json[Object]]]`
                     - `[string[Json[Array]]]`
 
-                externalAttributes:
-                  type: string
-                  description: |
-                    - optional
-
-                    ---
-
-                    **Types:**
-
-                    - `[string]`
-                    - `[string[boolean]]`
-                    - `[string[number]]`
-                    - `[string[Json[Object]]]`
-                    - `[string[Json[Array]]]`
-
       parameters:
         - name: instanceName
           in: path
@@ -955,21 +940,6 @@ paths:
                   type: string
                   description: Optional ID of the message to be quoted in the conversation.
                   example: "12345"
-                externalAttributes:
-                  type: string
-                  description: |
-                    - optional
-
-                    ---
-
-                    **Types:**
-
-                    - `[string]`
-                    - `[string[boolean]]`
-                    - `[string[number]]`
-                    - `[string[Json[Object]]]`
-                    - `[string[Json[Array]]]`
-
                 externalAttributes:
                   type: string
                   description: |
