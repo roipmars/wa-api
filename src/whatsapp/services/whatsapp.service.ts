@@ -47,7 +47,6 @@ import makeWASocket, {
   delay,
   DisconnectReason,
   downloadMediaMessage,
-  fetchLatestBaileysVersion,
   generateWAMessageFromContent,
   getContentType,
   getDevice,
@@ -79,7 +78,7 @@ import {
 } from '../../config/env.config';
 import { Logger } from '../../config/logger.config';
 import { INSTANCE_DIR, ROOT_DIR } from '../../config/path.config';
-import { readFileSync } from 'fs';
+import { lstat, readFileSync } from 'fs';
 import { join } from 'path';
 import axios, { AxiosError } from 'axios';
 import qrcode, { QRCodeToDataURLOptions } from 'qrcode';
@@ -1400,8 +1399,12 @@ export class WAStartupService {
   }
 
   // Instance Controller
-  public get connectionStatus() {
-    return this.stateConnection;
+  public getInstance() {
+    const i: Partial<Instance> & { status: InstanceStateConnection } = {
+      ...this.instance,
+      status: this.stateConnection,
+    };
+    return i;
   }
 
   // Send Message Controller
@@ -1774,6 +1777,39 @@ export class WAStartupService {
     }
   }
 
+  public async deleteChat(chatId: string) {
+    try {
+      const lastMessage = await this.repository.message.findFirst({
+        where: { keyRemoteJid: this.createJid(chatId) },
+        orderBy: { messageTimestamp: 'desc' },
+      });
+      if (!lastMessage) {
+        throw new Error('Chat not found');
+      }
+
+      await this.client.chatModify(
+        {
+          delete: true,
+          lastMessages: [
+            {
+              key: {
+                id: lastMessage.keyId,
+                fromMe: lastMessage.keyFromMe,
+                remoteJid: lastMessage.keyRemoteJid,
+              },
+              messageTimestamp: lastMessage.messageTimestamp,
+            },
+          ],
+        },
+        lastMessage.keyRemoteJid,
+      );
+
+      return { deletedAt: new Date(), chatId: lastMessage.keyRemoteJid };
+    } catch (error) {
+      throw new BadRequestException('Error while deleting chat', error?.message);
+    }
+  }
+
   public async readMessages(data: ReadMessageIdDto) {
     const keys: proto.IMessageKey[] = [];
     try {
@@ -1832,10 +1868,32 @@ export class WAStartupService {
   public async deleteMessage(del: DeleteMessage) {
     try {
       const id = Number.parseInt(del.id);
+      const everyOne = del?.everyOne === 'true';
       const message = await this.repository.message.findUnique({
         where: { id },
       });
-      return await this.client.sendMessage(message.keyRemoteJid, {
+
+      if (!everyOne) {
+        await this.client.chatModify(
+          {
+            delete: false as any,
+            lastMessages: [
+              {
+                key: {
+                  id: message.keyId,
+                  fromMe: message.keyFromMe,
+                  participant: message?.keyParticipant,
+                  remoteJid: message.keyRemoteJid,
+                },
+                messageTimestamp: message.messageTimestamp,
+              },
+            ],
+          },
+          message.keyRemoteJid,
+        );
+      }
+
+      await this.client.sendMessage(message.keyRemoteJid, {
         delete: {
           id: message.keyId,
           fromMe: message.keyFromMe,
@@ -1843,6 +1901,8 @@ export class WAStartupService {
           remoteJid: message.keyRemoteJid,
         },
       });
+
+      return { deletedAt: new Date(), message };
     } catch (error) {
       throw new InternalServerErrorException(
         'Error while deleting message for everyone',
@@ -2047,10 +2107,14 @@ export class WAStartupService {
     };
   }
 
-  public async fetchChats() {
-    return await this.repository.chat.findMany({
-      where: { instanceId: this.instance.id },
-    });
+  public async fetchChats(type?: string) {
+    const where = { instanceId: this.instance.id };
+    if (['chats', 'group'].includes(type)) {
+      where['remoteJid'] = {
+        contains: '@s.whatsapp.net',
+      };
+    }
+    return await this.repository.chat.findMany({ where });
   }
 
   public async rejectCall(data: RejectCallDto) {

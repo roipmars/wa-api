@@ -121,6 +121,25 @@ export function ChatRouter(chatController: ChatController, ...guards: RequestHan
 
       return res.status(HttpStatus.CREATED).json(response);
     })
+    .delete(routerPath('deleteMessage'), ...guards, async (req, res) => {
+      const response = await dataValidate<DeleteMessage>({
+        request: req,
+        schema: deleteMessageSchema,
+        execute: (instance, data) => chatController.deleteMessage(instance, data),
+      });
+
+      return res.status(HttpStatus.OK).json(response);
+    })
+    .delete(routerPath('deleteChat'), ...guards, async (req, res) => {
+      const instance = req.params as unknown as InstanceDto;
+      const query = req.query as Record<string, string>;
+      if (!query?.chatId) {
+        return res.status(HttpStatus.BAD_REQUEST).json({ message: 'chatId is required' });
+      }
+      const response = await chatController.deleteChat(instance, query?.chatId);
+
+      return res.status(HttpStatus.OK).json(response);
+    })
     .post(routerPath('fetchProfilePictureUrl'), ...guards, async (req, res) => {
       const response = await dataValidate<NumberDto>({
         request: req,
@@ -181,7 +200,8 @@ export function ChatRouter(chatController: ChatController, ...guards: RequestHan
       const response = await dataValidate<InstanceDto>({
         request: req,
         schema: null,
-        execute: (instance) => chatController.fetchChats(instance),
+        execute: (instance) =>
+          chatController.fetchChats(instance, req.query?.type as string),
       });
 
       return res.status(HttpStatus.OK).json(response);
