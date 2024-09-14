@@ -34,7 +34,7 @@
  * └──────────────────────────────────────────────────────────────────────────────┘
  */
 
-import { RequestHandler, Router } from 'express';
+import { query, RequestHandler, Router } from 'express';
 import {
   archiveChatSchema,
   contactValidateSchema,
@@ -64,6 +64,7 @@ import { Contact, Message } from '@prisma/client';
 import { HttpStatus } from '../../app.module';
 import { ChatController } from '../controllers/chat.controller';
 import { routerPath, dataValidate } from '../../validate/router.validate';
+import FormData from 'form-data';
 
 export function ChatRouter(chatController: ChatController, ...guards: RequestHandler[]) {
   const router = Router()
@@ -167,6 +168,7 @@ export function ChatRouter(chatController: ChatController, ...guards: RequestHan
 
       return res.status(HttpStatus.OK).json(response);
     })
+    // @deprecated
     .post(routerPath('retrieverMediaMessage'), ...guards, async (req, res) => {
       const response = await dataValidate<Message>({
         request: req,
@@ -183,9 +185,12 @@ export function ChatRouter(chatController: ChatController, ...guards: RequestHan
 
       transform.pipe(res);
       transform.on('error', (err) => {
-        console.error(err);
-        res.status(HttpStatus.INTERNAL_SERVER_ERROR).json([err?.message, err?.stack]);
+        if (err) {
+          console.error(err);
+          res.status(HttpStatus.INTERNAL_SERVER_ERROR).json([err?.message, err?.stack]);
+        }
       });
+      return;
     })
     .post(routerPath('findMessages'), ...guards, async (req, res) => {
       const response = await dataValidate<Query<Message>>({
