@@ -6,14 +6,14 @@ FROM base AS builder
 
 WORKDIR /codechat
 
-# Instalar dependências de construção primeiro
+# Install construction dependencies first
 RUN apt-get update && apt-get install -y git
 
-# Copiar arquivos package.json e instalar dependências
+# Copy files package.json and install dependencies
 COPY package*.json ./
 RUN npm install
 
-# Copiar os demais arquivos necessários para o build
+# Copy the other files needed for the build
 COPY tsconfig.json .
 COPY ./src ./src
 COPY ./public ./public
@@ -22,7 +22,7 @@ COPY ./prisma ./prisma
 COPY ./views ./views
 COPY .env.dev .env
 
-# Definir variável de ambiente para a construção
+# Define environmental variable for construction
 ENV DATABASE_URL=postgres://postgres:pass@localhost/db_test
 RUN npx prisma generate
 
@@ -38,7 +38,7 @@ LABEL com.api.mantainer="https://github.com/code-chat-br"
 LABEL com.api.repository="https://github.com/code-chat-br/whatsapp-api"
 LABEL com.api.issues="https://github.com/code-chat-br/whatsapp-api/issues"
 
-# Copiar arquivos construídos do estágio builder
+# Copy built files from the Builder internship
 COPY --from=builder /codechat/dist ./dist
 COPY --from=builder /codechat/docs ./docs
 COPY --from=builder /codechat/prisma ./prisma
